@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<head>
+    <title>Online Exam</title>
+    <style>
+        		@import url('https://fonts.googleapis.com/css?family=Raleway:200');
+
+
+#box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1490px;
+  height: 150px;
+  color: white;
+  font-family: 'Raleway';
+  font-size: 2.5rem;
+}
+.gradient-border {
+  --borderWidth: 3px;
+
+  position: relative;
+  border-radius: var(--borderWidth);
+}
+.gradient-border:after {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--borderWidth));
+  left: calc(-1 * var(--borderWidth));
+  height: calc(100% + var(--borderWidth) * 2);
+  width: calc(100% + var(--borderWidth) * 2);
+  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+  border-radius: calc(2 * var(--borderWidth));
+  z-index: -1;
+  animation: animatedgradient 3s ease alternate infinite;
+  background-size: 300% 300%;
+}
+
+
+@keyframes animatedgradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function()
+        {
+            $("#button1").click(function()
+            {
+                $(".rb").show();
+                $(".rb").attr("disabled",true);
+            });
+        });
+        function getanswers()
+        {
+            document.getElementById("useranswers").innerHTML="";
+            var e=document.getElementsByTagName('input');
+            for(i=0;i<=e.length;i++)
+            {
+                if(e[i].type=="radio")
+                {
+                    if(e[i].checked)
+                    {
+                        document.getElementById("useranswers").innerHTML+="Q - "+e[i].name+" : The answer you are selected is : "+e[i].value+"<br/>";
+
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<html>
+<body>
+    <div class="gradient-border" id="box" >
+        <h2>Django MCQ Exam</h2>
+        </div>
+    <div style="padding-left:30px;"">
+        <table>
+            {% for result in result %}
+            <tr> 
+                <td><h3>{{ forloop.counter }}-{{result.question}}</td></h3>
+            </tr>
+            <tr>
+                <td><input type="radio" id="option1" name="{{result.correct_answer}}" class="rb" value="{{result.correct_answer}}">{{result.correct_answer}}</td>
+            </tr>
+            {% for i in result.incorrect_answers %}
+            <tr>
+                <td><input type="radio" id="option2" name="{{result.correct_answer}}" class="rb" value="{{i}}">{{i}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td><label class="rb" style="display: none;" id="correct"><b>Correct answer : {{result.correct_answer}}</b></label></td>
+            </tr>
+            
+        {% endfor %}
+        <hr>
+        </table>
+        <hr>
+        <br>
+        <input  type="submit" value="click here for results" id="button1" onclick="getanswers();" />
+        <br>
+        <b id="useranswers"> </b>
+        <h1 id="time"></h1>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $( window ).load(function() {
+	var timeStart = new Date();
+
+  $("#button1").on('click', function() {
+    var timeEnd = new Date();
+    var timeDiff = timeEnd - timeStart;
+    console.log(timeDiff);
+
+    $("#time").html('Time taken: ' + Math.round(timeDiff/1000) + ' seconds');
+  });
+});
+</script>
+</html>

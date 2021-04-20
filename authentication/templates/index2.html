@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+    <title>Online Exam</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function()
+        {
+            $("#button1").click(function()
+            {
+                $(".rb").show();
+                $(".rb").attr("disabled",true);
+            });
+        });
+        function getanswers()
+        {
+            document.getElementById("useranswers").innerHTML="";
+            var e=document.getElementsByTagName('input');
+            for(i=0;i<=e.length;i++)
+            {
+                if(e[i].type=="radio")
+                {
+                    if(e[i].checked)
+                    {
+                        document.getElementById("useranswers").innerHTML+="Q "+e[i].name+": The answer you are selected is : "+e[i].value+"<br/>";
+
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<html>
+<body>
+    <center>
+        <h1>Django Online MCQ Exam</h1>    
+        <hr> 
+    </center>
+    <div style="padding-left:30px;"">
+        <table>
+            {% for result in result %}
+            <tr> 
+                <td>{{ forloop.counter }}-{{result.question}}</td>
+            </tr>
+            <tr>
+                <td><input type="radio" id="option1" name="{{result.correct_answer}}" class="rb" value="{{result.correct_answer}}">{{result.correct_answer}}</td>
+            </tr>
+            {% for i in result.incorrect_answers %}
+            <tr>
+                <td><input type="radio" id="option2" name="{{result.correct_answer}}" class="rb" value="{{i}}">{{i}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td><label class="rb" style="display: none;" id="correct"><b>Correct answer : {{result.correct_answer}}</b></label></td>
+            </tr>
+            
+        {% endfor %}
+        <hr>
+        </table>
+        <hr>
+        <br>
+        <input  type="submit" value="click here for results" id="button1" onclick="getanswers();" />
+        <br>
+        <b id="useranswers"> </b>
+        <h1 id="time"></h1>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $( window ).load(function() {
+	var timeStart = new Date();
+
+  $("#button1").on('click', function() {
+    var timeEnd = new Date();
+    var timeDiff = timeEnd - timeStart;
+    console.log(timeDiff);
+
+    $("#time").html('Time taken: ' + Math.round(timeDiff/1000) + ' seconds');
+  });
+});
+</script>
+</html>
